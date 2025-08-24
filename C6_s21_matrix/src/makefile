@@ -25,7 +25,7 @@ $(OBJS): | build build/$(SRCS_DIR)
 
 build:
 	@echo "\033[42mCreated by V01D-4-M3; Check my github:\033[0m"
-	@echo "\033[42mhttps://github.com/V01D-4-M3     ^-^  \033[0m"
+	@echo "\033[42mhttps://github.com/V01D-4-M3       ^-^  \033[0m"
 	@mkdir -p build build/$(SRCS_DIR)
 
 $(TARGET): $(OBJS)
@@ -44,11 +44,20 @@ test: $(TARGET)
 	@$(CC) $(CFLAGS) $(TEST_SRC) -I$(SRCS_DIR) -o $(TEST_TARGET) $(TARGET) $(LIBS)
 	@echo "\033[32mRunning tests...\033[0m"
 	@echo "----------------------------------------------------"
-	@./$(TEST_TARGET)
+	@./$(TEST_TARGET) || (echo "\033[31mTests failed!\033[0m" && exit 1)
+	@echo "----------------------------------------------------"
+	@echo "\033[34mGenerating coverage data...\033[0m"
 	@gcov -a -b -o build/$(SRCS_DIR) $(SRCS_DIR)/*.c
-	@mkdir -p coverage
-	@mv *.gcov coverage/ 2>/dev/null || echo "\033[33mNo gcov reports generated\033[0m"
-	@echo "\033[32mTests completed with coverage\033[0m"
+	@mkdir -p coverage/html
+	@lcov --capture --directory build/$(SRCS_DIR) --output-file coverage/coverage.info \
+		|| (echo "\033[33mFailed to run lcov. Is it installed? Try: sudo apt install lcov\033[0m" && exit 1)
+	@genhtml coverage/coverage.info --output-directory coverage/html \
+		|| (echo "\033[33mFailed to run genhtml\033[0m" && exit 1)
+	@xdg-open "coverage/html/index.html" 2>/dev/null || \
+	 open "coverage/html/index.html" 2>/dev/null || \
+	 cygstart "coverage/html/index.html" 2>/dev/null || \
+	 echo "\033[33mCould not open browser automatically.\033[0m"
+
 
 format_style:
 	@cp ../materials/linters/.clang-format .
@@ -72,15 +81,15 @@ valgrind_check: test
 
 help:
 	@echo "\033[34mMakefile commands:\033[0m"
-	@echo "\033[32mall\033[0m           - build the library"
-	@echo "\033[32mbuild\033[0m         - build the library"
-	@echo "\033[32mrebuild\033[0m       - clean and rebuild"
-	@echo "\033[32mclean\033[0m         - remove generated files"
-	@echo "\033[32mtest\033[0m          - build and run unit tests with coverage"
-	@echo "\033[32mvalgrind_check\033[0m - run tests under Valgrind"
-	@echo "\033[32mstyle_check\033[0m   - check code style"
-	@echo "\033[32mformat_style\033[0m  - format code with clang-format"
-	@echo "\033[32mhelp\033[0m          - show this help"
+	@echo "\033[32mall\033[0m             - build the library"
+	@echo "\033[32mbuild\033[0m           - build the library"
+	@echo "\033[32mrebuild\033[0m         - clean and rebuild"
+	@echo "\033[32mclean\033[0m           - remove generated files"
+	@echo "\033[32mtest\033[0m            - run tests + coverage + open HTML report"
+	@echo "\033[32mvalgrind_check\033[0m  - run tests under Valgrind"
+	@echo "\033[32mstyle_check\033[0m     - check code style"
+	@echo "\033[32mformat_style\033[0m    - format code with clang-format"
+	@echo "\033[32mhelp\033[0m            - show this help"
 
 clean:
 	@rm -rf build coverage 
