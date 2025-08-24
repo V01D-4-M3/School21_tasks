@@ -1,6 +1,6 @@
 #include "tests.h"
 
-START_TEST(test_mult_matrix_1) {
+START_TEST(s21_mult_matrix_1) {
   matrix_t A, B, result, expected;
   s21_create_matrix(2, 3, &A);
   s21_create_matrix(3, 2, &B);
@@ -37,7 +37,7 @@ START_TEST(test_mult_matrix_1) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_2) {
+START_TEST(s21_mult_matrix_2) {
   matrix_t A, B, result;
   s21_create_matrix(2, 2, &A);
   s21_create_matrix(3, 2, &B);
@@ -63,7 +63,7 @@ START_TEST(test_mult_matrix_2) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_3) {
+START_TEST(s21_mult_matrix_3) {
   matrix_t A, B, result, expected;
   s21_create_matrix(2, 2, &A);
   s21_create_matrix(2, 2, &B);
@@ -96,7 +96,7 @@ START_TEST(test_mult_matrix_3) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_4) {
+START_TEST(s21_mult_matrix_4) {
   matrix_t A, B, result, expected;
   s21_create_matrix(2, 3, &A);
   s21_create_matrix(3, 2, &B);
@@ -131,7 +131,7 @@ START_TEST(test_mult_matrix_4) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_5) {
+START_TEST(s21_mult_matrix_5) {
   matrix_t A, B, result, expected;
   s21_create_matrix(1, 1, &A);
   s21_create_matrix(1, 1, &B);
@@ -153,7 +153,7 @@ START_TEST(test_mult_matrix_5) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_6) {
+START_TEST(s21_mult_matrix_6) {
   matrix_t B, result;
   s21_create_matrix(2, 2, &B);
   int res = s21_mult_matrix(NULL, &B, &result);
@@ -162,7 +162,7 @@ START_TEST(test_mult_matrix_6) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_7) {
+START_TEST(s21_mult_matrix_7) {
   matrix_t A, result;
   s21_create_matrix(2, 2, &A);
   int res = s21_mult_matrix(&A, NULL, &result);
@@ -171,7 +171,7 @@ START_TEST(test_mult_matrix_7) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_8) {
+START_TEST(s21_mult_matrix_8) {
   matrix_t A, B;
   s21_create_matrix(2, 3, &A);
   s21_create_matrix(3, 2, &B);
@@ -182,14 +182,14 @@ START_TEST(test_mult_matrix_8) {
 }
 END_TEST
 
-START_TEST(test_mult_matrix_9) {
+START_TEST(s21_mult_matrix_9) {
   matrix_t A = {0}, B = {0}, result;
   int res = s21_mult_matrix(&A, &B, &result);
   ck_assert_int_eq(res, INCORRECT_MATRIX);
 }
 END_TEST
 
-START_TEST(test_mult_matrix_10) {
+START_TEST(s21_mult_matrix_10) {
   matrix_t A, B, result, expected;
   s21_create_matrix(3, 2, &A);
   s21_create_matrix(2, 3, &B);
@@ -238,16 +238,16 @@ Suite *s21_mult_matrix_suite(void) {
   s = suite_create("s21_mult_matrix");
   tc_core = tcase_create("Core");
 
-  tcase_add_test(tc_core, test_mult_matrix_1);
-  tcase_add_test(tc_core, test_mult_matrix_2);
-  tcase_add_test(tc_core, test_mult_matrix_3);
-  tcase_add_test(tc_core, test_mult_matrix_4);
-  tcase_add_test(tc_core, test_mult_matrix_5);
-  tcase_add_test(tc_core, test_mult_matrix_6);
-  tcase_add_test(tc_core, test_mult_matrix_7);
-  tcase_add_test(tc_core, test_mult_matrix_8);
-  tcase_add_test(tc_core, test_mult_matrix_9);
-  tcase_add_test(tc_core, test_mult_matrix_10);
+  tcase_add_test(tc_core, s21_mult_matrix_1);
+  tcase_add_test(tc_core, s21_mult_matrix_2);
+  tcase_add_test(tc_core, s21_mult_matrix_3);
+  tcase_add_test(tc_core, s21_mult_matrix_4);
+  tcase_add_test(tc_core, s21_mult_matrix_5);
+  tcase_add_test(tc_core, s21_mult_matrix_6);
+  tcase_add_test(tc_core, s21_mult_matrix_7);
+  tcase_add_test(tc_core, s21_mult_matrix_8);
+  tcase_add_test(tc_core, s21_mult_matrix_9);
+  tcase_add_test(tc_core, s21_mult_matrix_10);
 
   suite_add_tcase(s, tc_core);
   return s;
