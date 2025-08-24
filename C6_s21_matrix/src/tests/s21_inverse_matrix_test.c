@@ -78,7 +78,7 @@ START_TEST(s21_inverse_matrix_5) {
   matrix_t A = {0}, result = {0};
   s21_create_matrix(2, 3, &A);
 
-  ck_assert_int_eq(s21_inverse_matrix(&A, &result), INCORRECT_MATRIX);
+  ck_assert_int_eq(s21_inverse_matrix(&A, &result), CALCULATION_ERROR);
 
   s21_remove_matrix(&A);
 }

@@ -2,13 +2,12 @@
 
 static int validate_inverse_input(matrix_t *A, matrix_t *result) {
   return (A != NULL && result != NULL && A->matrix != NULL &&
-          A->rows == A->columns);
+          A->rows > 0 && A->columns > 0);
 }
 
 static int calculate_determinant_safely(matrix_t *A, double *det) {
   int status = s21_determinant(A, det);
-  if (status != OK)
-    return status;
+  if (status != OK) return status;
   return (*det == 0.0) ? CALCULATION_ERROR : OK;
 }
 
@@ -42,30 +41,34 @@ static int create_and_fill_inverse(matrix_t *adjugate, double det,
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+  int status = OK;
+
   if (!validate_inverse_input(A, result)) {
-    return INCORRECT_MATRIX;
+    status = INCORRECT_MATRIX;  // 1
   }
-
-  double det = 0.0;
-  int det_status = calculate_determinant_safely(A, &det);
-  if (det_status != OK) {
-    return det_status;
+  else if (A->rows != A->columns) {
+    status = CALCULATION_ERROR;  // 2
   }
-
-  matrix_t cofactors = {0};
-  if (compute_cofactors_safely(A, &cofactors) != OK) {
-    return INCORRECT_MATRIX; // Код 1
+  else {
+    double det = 0.0;
+    int det_status = calculate_determinant_safely(A, &det);
+    if (det_status != OK) {
+      status = det_status; 
+    } else {
+      matrix_t cofactors = {0};
+      if (compute_cofactors_safely(A, &cofactors) != OK) {
+        status = CALCULATION_ERROR;  
+      } else {
+        matrix_t adjugate = {0};
+        status = compute_adjugate_safely(&cofactors, &adjugate);
+        s21_remove_matrix(&cofactors);
+        if (status == OK) {
+          status = create_and_fill_inverse(&adjugate, det, result);
+          s21_remove_matrix(&adjugate);
+        }
+      }
+    }
   }
-
-  matrix_t adjugate = {0};
-  int status = compute_adjugate_safely(&cofactors, &adjugate);
-  s21_remove_matrix(&cofactors);
-  if (status != OK) {
-    return status;
-  }
-
-  status = create_and_fill_inverse(&adjugate, det, result);
-  s21_remove_matrix(&adjugate);
 
   return status;
 }
