@@ -7,10 +7,11 @@ void s21_suit_execution(SRunner *runner, int *failed_count,
   int count = srunner_ntests_failed(runner);
   *failed_count += count;
   if (count == 0) {
-    printf("\033[32m✓ %s: All tests passed\033[0m\n", suite_name);
+    printf("\033[32m[✓] %s: All tests passed [✓]\033[0m\n", suite_name);
   } else {
-    printf("\033[31m✗ %s: %d tests failed\033[0m\n", suite_name, count);
+    printf("\033[31m[✗] %s: %d tests failed [✗]\033[0m\n", suite_name, count);
   }
+  printf("---------------------------------------------------\n");
   srunner_free(runner);
 }
 
@@ -26,8 +27,10 @@ int main(void) {
                      "s21_sum_matrix");
   s21_suit_execution(srunner_create(s21_sub_matrix_suite()), &failed_count,
                      "s21_sub_matrix");
-    s21_suit_execution(srunner_create(s21_mult_number_suite()), &failed_count,
+  s21_suit_execution(srunner_create(s21_mult_number_suite()), &failed_count,
                      "s21_mult_number");
+  s21_suit_execution(srunner_create(s21_mult_matrix_suite()), &failed_count,
+                     "s21_mult_matrix");
   printf("\n\033[1;36mTotal failed: %d\033[0m\n", failed_count);
   return failed_count == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

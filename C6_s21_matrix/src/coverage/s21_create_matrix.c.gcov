@@ -1,0 +1,200 @@
+        -:    0:Source:s21_matrix/s21_create_matrix.c
+        -:    1:#include "../s21_matrix.h"
+        -:    2:
+        -:    3:static int is_invalid_dimensions(int rows, int columns);
+        -:    4:static int is_too_large_for_int(int rows, int columns);
+        -:    5:static int is_excessively_sized(int rows, int columns);
+        -:    6:static int will_overflow_memory(int rows, int columns);
+        -:    7:static int initialize_matrix(matrix_t *result, int rows, int columns);
+        -:    8:static int allocate_row_pointers(matrix_t *result, int rows);
+        -:    9:static int allocate_matrix_elements(matrix_t *result, int rows, int columns);
+        -:   10:static void free_allocated_matrix_on_error(matrix_t *result);
+        -:   11:
+function s21_create_matrix called 105 returned 100% blocks executed 88%
+      105:   12:int s21_create_matrix(int rows, int columns, matrix_t *result) {
+      105:   13:  int status = OK;
+        -:   14:
+      105:   15:  if (is_invalid_dimensions(rows, columns)) {
+      105:   15-block  0
+call    0 returned 100%
+branch  1 taken 6% (fallthrough)
+branch  2 taken 94%
+        6:   16:    status = INCORRECT_MATRIX;
+        6:   16-block  0
+       99:   17:  } else if (is_too_large_for_int(rows, columns)) {
+       99:   17-block  0
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+    #####:   18:    status = INCORRECT_MATRIX;
+    %%%%%:   18-block  0
+       99:   19:  } else if (result == NULL) {
+       99:   19-block  0
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        1:   20:    status = INCORRECT_MATRIX;
+        1:   20-block  0
+       98:   21:  } else if (is_excessively_sized(rows, columns)) {
+       98:   21-block  0
+call    0 returned 100%
+branch  1 taken 2% (fallthrough)
+branch  2 taken 98%
+        2:   22:    status = INCORRECT_MATRIX;
+        2:   22-block  0
+       96:   23:  } else if (will_overflow_memory(rows, columns)) {
+       96:   23-block  0
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+    #####:   24:    status = INCORRECT_MATRIX;
+    %%%%%:   24-block  0
+        -:   25:  } else {
+       96:   26:    status = initialize_matrix(result, rows, columns);
+       96:   26-block  0
+call    0 returned 100%
+        -:   27:  }
+        -:   28:
+      105:   29:  return status;
+      105:   29-block  0
+        -:   30:}
+        -:   31:
+function is_invalid_dimensions called 105 returned 100% blocks executed 100%
+      105:   32:static int is_invalid_dimensions(int rows, int columns) {
+      105:   33:  return (rows <= 0 || columns <= 0);
+      105:   33-block  0
+branch  0 taken 96% (fallthrough)
+branch  1 taken 4%
+      101:   33-block  1
+branch  2 taken 2% (fallthrough)
+branch  3 taken 98%
+        6:   33-block  2
+       99:   33-block  3
+      105:   33-block  4
+        -:   34:}
+        -:   35:
+function is_too_large_for_int called 99 returned 100% blocks executed 100%
+       99:   36:static int is_too_large_for_int(int rows, int columns) {
+       99:   37:  return (rows > INT_MAX || columns > INT_MAX);
+       99:   37-block  0
+        -:   38:}
+        -:   39:
+function is_excessively_sized called 98 returned 100% blocks executed 75%
+       98:   40:static int is_excessively_sized(int rows, int columns) {
+       98:   41:  size_t s_rows = (size_t)rows;
+       98:   42:  size_t s_columns = (size_t)columns;
+        -:   43:
+       98:   44:  if (s_rows > MAX_ALLOWED_ROWS) return 1;
+       98:   44-block  0
+branch  0 taken 2% (fallthrough)
+branch  1 taken 98%
+        2:   44-block  1
+      96*:   45:  if (s_columns > MAX_ALLOWED_COLUMNS) return 1;
+       96:   45-block  0
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    %%%%%:   45-block  1
+      96*:   46:  if (s_rows * s_columns > MAX_ALLOWED_ELEMENTS) return 1;
+       96:   46-block  0
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    %%%%%:   46-block  1
+        -:   47:
+       96:   48:  return 0;
+       96:   48-block  0
+        -:   49:}
+        -:   50:
+function will_overflow_memory called 96 returned 100% blocks executed 67%
+       96:   51:static int will_overflow_memory(int rows, int columns) {
+       96:   52:  size_t s_rows = (size_t)rows;
+       96:   53:  size_t s_columns = (size_t)columns;
+        -:   54:
+      96*:   55:  if (s_columns > SIZE_MAX / sizeof(double)) return 1;
+       96:   55-block  0
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    %%%%%:   55-block  1
+        -:   56:
+       96:   57:  size_t row_size = s_columns * sizeof(double);
+      96*:   58:  if (row_size > 0 && s_rows > SIZE_MAX / row_size) return 1;
+       96:   58-block  0
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+       96:   58-block  1
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+    %%%%%:   58-block  2
+        -:   59:
+      96*:   60:  if (s_rows > SIZE_MAX / sizeof(double *)) return 1;
+       96:   60-block  0
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    %%%%%:   60-block  1
+        -:   61:
+       96:   62:  return 0;
+       96:   62-block  0
+        -:   63:}
+        -:   64:
+function initialize_matrix called 96 returned 100% blocks executed 67%
+       96:   65:static int initialize_matrix(matrix_t *result, int rows, int columns) {
+       96:   66:  result->rows = rows;
+       96:   67:  result->columns = columns;
+       96:   68:  result->matrix = NULL;
+        -:   69:
+       96:   70:  if (allocate_row_pointers(result, rows) != OK) {
+       96:   70-block  0
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+    #####:   71:    return INCORRECT_MATRIX;
+    %%%%%:   71-block  0
+        -:   72:  }
+        -:   73:
+       96:   74:  if (allocate_matrix_elements(result, rows, columns) != OK) {
+       96:   74-block  0
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+    #####:   75:    free_allocated_matrix_on_error(result);
+    %%%%%:   75-block  0
+call    0 never executed
+    #####:   76:    return INCORRECT_MATRIX;
+        -:   77:  }
+        -:   78:
+       96:   79:  return OK;
+       96:   79-block  0
+        -:   80:}
+        -:   81:
+function allocate_row_pointers called 96 returned 100% blocks executed 100%
+       96:   82:static int allocate_row_pointers(matrix_t *result, int rows) {
+       96:   83:  result->matrix = calloc((size_t)rows, sizeof(double *));
+       96:   84:  return (result->matrix == NULL) ? INCORRECT_MATRIX : OK;
+       96:   84-block  0
+        -:   85:}
+        -:   86:
+function allocate_matrix_elements called 96 returned 100% blocks executed 86%
+       96:   87:static int allocate_matrix_elements(matrix_t *result, int rows, int columns) {
+     1875:   88:  for (int i = 0; i < rows; i++) {
+       96:   88-block  0
+     1779:   88-block  1
+     1875:   88-block  2
+branch  0 taken 95%
+branch  1 taken 5% (fallthrough)
+     1779:   89:    result->matrix[i] = calloc((size_t)columns, sizeof(double));
+     1779:   90:    if (result->matrix[i] == NULL) {
+     1779:   90-block  0
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   91:      return INCORRECT_MATRIX;
+    %%%%%:   91-block  0
+        -:   92:    }
+        -:   93:  }
+       96:   94:  return OK;
+       96:   94-block  0
+        -:   95:}
+        -:   96:
+function free_allocated_matrix_on_error called 0 returned 0% blocks executed 0%
+    #####:   97:static void free_allocated_matrix_on_error(matrix_t *result) {
+    #####:   98:  s21_remove_matrix(result);
+    %%%%%:   98-block  0
+call    0 never executed
+    #####:   99:}

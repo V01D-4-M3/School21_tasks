@@ -1,0 +1,78 @@
+        -:    0:Source:s21_matrix/s21_sub_matrix.c
+        -:    1:#include "../s21_matrix.h"
+        -:    2:
+function are_dimensions_compatible called 9 returned 100% blocks executed 100%
+        9:    3:static int are_dimensions_compatible(const matrix_t *A, const matrix_t *B) {
+        9:    4:  return (A->rows == B->rows && A->columns == B->columns);
+        9:    4-block  0
+branch  0 taken 89% (fallthrough)
+branch  1 taken 11%
+        8:    4-block  1
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        8:    4-block  2
+        1:    4-block  3
+        9:    4-block  4
+        -:    5:}
+        -:    6:
+function create_result_matrix called 8 returned 100% blocks executed 100%
+        8:    7:static int create_result_matrix(const matrix_t *A, matrix_t *result) {
+        8:    8:  return s21_create_matrix(A->rows, A->columns, result);
+        8:    8-block  0
+call    0 returned 100%
+        -:    9:}
+        -:   10:
+function subtract_matrix_elements called 8 returned 100% blocks executed 100%
+        8:   11:static void subtract_matrix_elements(const matrix_t *A, const matrix_t *B,
+        -:   12:                                     matrix_t *result) {
+      122:   13:  for (int i = 0; i < A->rows; i++) {
+        8:   13-block  0
+      114:   13-block  1
+      122:   13-block  2
+branch  0 taken 93%
+branch  1 taken 7% (fallthrough)
+    10139:   14:    for (int j = 0; j < A->columns; j++) {
+      114:   14-block  0
+    10139:   14-block  1
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+    10025:   15:      result->matrix[i][j] = A->matrix[i][j] - B->matrix[i][j];
+    10025:   15-block  0
+        -:   16:    }
+        -:   17:  }
+        8:   18:}
+        -:   19:
+function s21_sub_matrix called 12 returned 100% blocks executed 100%
+       12:   20:int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+       12:   21:  int status = OK;
+        -:   22:
+       12:   23:  if (!is_valid_input(A, B, result)) {
+       12:   23-block  0
+call    0 returned 100%
+branch  1 taken 25% (fallthrough)
+branch  2 taken 75%
+        3:   24:    status = INCORRECT_MATRIX;
+        3:   24-block  0
+        9:   25:  } else if (!are_dimensions_compatible(A, B)) {
+        9:   25-block  0
+call    0 returned 100%
+branch  1 taken 11% (fallthrough)
+branch  2 taken 89%
+        1:   26:    status = CALCULATION_ERROR;
+        1:   26-block  0
+        -:   27:  } else {
+        8:   28:    status = create_result_matrix(A, result);
+        8:   28-block  0
+call    0 returned 100%
+        8:   29:    if (status == OK) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        8:   30:      subtract_matrix_elements(A, B, result);
+        8:   30-block  0
+call    0 returned 100%
+        -:   31:    }
+        -:   32:  }
+        -:   33:
+       12:   34:  return status;
+       12:   34-block  0
+        -:   35:}

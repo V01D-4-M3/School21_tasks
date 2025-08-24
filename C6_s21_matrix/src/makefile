@@ -30,7 +30,6 @@ $(TARGET): $(OBJS)
 	@ar rcs $@ $^
 	@ranlib $@
 	@echo "\033[32mLibrary compiled: $(TARGET)\033[0m"
-	@echo "\033[34mTo run tests, enter 'make test'\033[0m"
 
 build/$(SRCS_DIR)/%.o: $(SRCS_DIR)/%.c | build build/$(SRCS_DIR)
 	@$(CC) $(CFLAGS) $(GCOV) -c $< -o $@
@@ -42,6 +41,7 @@ test: $(TARGET)
 	@echo "\033[34mBuilding test executable...\033[0m"
 	@$(CC) $(CFLAGS) $(TEST_SRC) -I$(SRCS_DIR) -o $(TEST_TARGET) $(TARGET) $(LIBS)
 	@echo "\033[32mRunning tests...\033[0m"
+	@echo "----------------------------------------------------"
 	@./$(TEST_TARGET)
 	@gcov -a -b -o build/$(SRCS_DIR) $(SRCS_DIR)/*.c
 	@mkdir -p coverage

@@ -5,3 +5,4 @@ int is_valid_input(const matrix_t *A, const matrix_t *B,
   return (A != NULL && B != NULL && result != NULL && A->matrix != NULL &&
           B->matrix != NULL);
 }
+
