@@ -2,7 +2,8 @@
 
 void s21_suit_execution(SRunner *runner, int *failed_count,
                         const char *suite_name) {
-  if (!runner) return;
+  if (!runner)
+    return;
   srunner_run_all(runner, CK_NORMAL);
   int count = srunner_ntests_failed(runner);
   *failed_count += count;
@@ -31,6 +32,8 @@ int main(void) {
                      "s21_mult_number");
   s21_suit_execution(srunner_create(s21_mult_matrix_suite()), &failed_count,
                      "s21_mult_matrix");
+  s21_suit_execution(srunner_create(s21_transpose_suite()), &failed_count,
+                     "s21_transpose");
   printf("\n\033[1;36mTotal failed: %d\033[0m\n", failed_count);
   return failed_count == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -41,9 +41,12 @@ static int is_excessively_sized(int rows, int columns) {
   size_t s_rows = (size_t)rows;
   size_t s_columns = (size_t)columns;
 
-  if (s_rows > MAX_ALLOWED_ROWS) return 1;
-  if (s_columns > MAX_ALLOWED_COLUMNS) return 1;
-  if (s_rows * s_columns > MAX_ALLOWED_ELEMENTS) return 1;
+  if (s_rows > MAX_ALLOWED_ROWS)
+    return 1;
+  if (s_columns > MAX_ALLOWED_COLUMNS)
+    return 1;
+  if (s_rows * s_columns > MAX_ALLOWED_ELEMENTS)
+    return 1;
 
   return 0;
 }
@@ -52,12 +55,15 @@ static int will_overflow_memory(int rows, int columns) {
   size_t s_rows = (size_t)rows;
   size_t s_columns = (size_t)columns;
 
-  if (s_columns > SIZE_MAX / sizeof(double)) return 1;
+  if (s_columns > SIZE_MAX / sizeof(double))
+    return 1;
 
   size_t row_size = s_columns * sizeof(double);
-  if (row_size > 0 && s_rows > SIZE_MAX / row_size) return 1;
+  if (row_size > 0 && s_rows > SIZE_MAX / row_size)
+    return 1;
 
-  if (s_rows > SIZE_MAX / sizeof(double *)) return 1;
+  if (s_rows > SIZE_MAX / sizeof(double *))
+    return 1;
 
   return 0;
 }
