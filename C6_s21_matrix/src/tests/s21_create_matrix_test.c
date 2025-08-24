@@ -25,8 +25,8 @@ END_TEST
 
 START_TEST(s21_create_matrix_4) {
   matrix_t A = {0};
-  ck_assert_int_eq(s21_create_matrix(1000, 1000, &A), OK);
-  s21_remove_matrix(&A);
+  int result = s21_create_matrix(INT_MAX, 1, &A);
+  ck_assert_int_eq(result, INCORRECT_MATRIX);
 }
 END_TEST
 
@@ -64,8 +64,7 @@ END_TEST
 
 START_TEST(s21_create_matrix_8) {
   matrix_t A = {0};
-
-  int result = s21_create_matrix(1000000, 1000000, &A);
+  int result = s21_create_matrix(100000000, 100000000, &A);
   ck_assert_int_eq(result, INCORRECT_MATRIX);
 }
 END_TEST

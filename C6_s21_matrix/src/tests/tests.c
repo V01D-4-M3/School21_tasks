@@ -1,5 +1,6 @@
 #include "tests.h"
 
+
 void s21_suit_execution(SRunner *runner, int *failed_count,
                         const char *suite_name) {
   if (!runner)
