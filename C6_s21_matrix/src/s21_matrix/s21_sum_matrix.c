@@ -17,6 +17,9 @@ int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   } else if (!are_dimensions_compatible(A, B)) {
     status = CALCULATION_ERROR;
   } else {
+    if (result->matrix != NULL) {
+      s21_remove_matrix(result);
+    }
     status = create_result_matrix(A, result);
     if (status == OK) {
       add_matrix_elements(A, B, result);

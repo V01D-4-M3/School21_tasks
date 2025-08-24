@@ -108,9 +108,6 @@ START_TEST(s21_mult_matrix_4) {
   A.matrix[1][0] = 4.0;
   A.matrix[1][1] = 5.0;
   A.matrix[1][2] = 6.0;
-
-  s21_create_matrix(3, 2, &B);
-  s21_create_matrix(2, 2, &expected);
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 2; j++)
       B.matrix[i][j] = 0.0;

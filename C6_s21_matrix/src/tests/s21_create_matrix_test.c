@@ -54,11 +54,18 @@ START_TEST(s21_create_matrix_7) {
   int result = s21_create_matrix(3, 3, &A);
   ck_assert_int_eq(result, OK);
 
+  s21_remove_matrix(&A);
+
   result = s21_create_matrix(3, 3, &A);
   ck_assert_int_eq(result, OK);
 
+  s21_remove_matrix(&A);
+
   result = s21_create_matrix(INT_MAX, 1000000, &A);
   ck_assert_int_eq(result, INCORRECT_MATRIX);
+  ck_assert_ptr_eq(A.matrix, NULL);
+  ck_assert_int_eq(A.rows, 0);
+  ck_assert_int_eq(A.columns, 0);
 }
 END_TEST
 
