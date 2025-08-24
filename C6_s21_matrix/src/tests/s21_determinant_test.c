@@ -1,5 +1,4 @@
-#include "tests.h"  
-
+#include "tests.h"
 
 START_TEST(s21_determinant_1) {
   matrix_t A = {0};
@@ -18,7 +17,6 @@ START_TEST(s21_determinant_1) {
 }
 END_TEST
 
-
 START_TEST(s21_determinant_2) {
   matrix_t A = {0};
   double result = 0.0;
@@ -32,15 +30,20 @@ START_TEST(s21_determinant_2) {
 }
 END_TEST
 
-
 START_TEST(s21_determinant_3) {
   matrix_t A = {0};
   double result = 0.0;
   s21_create_matrix(3, 3, &A);
 
-  A.matrix[0][0] = 2.0; A.matrix[0][1] = 1.0; A.matrix[0][2] = 3.0;
-  A.matrix[1][0] = 1.0; A.matrix[1][1] = 3.0; A.matrix[1][2] = 2.0;
-  A.matrix[2][0] = 3.0; A.matrix[2][1] = 2.0; A.matrix[2][2] = 1.0;
+  A.matrix[0][0] = 2.0;
+  A.matrix[0][1] = 1.0;
+  A.matrix[0][2] = 3.0;
+  A.matrix[1][0] = 1.0;
+  A.matrix[1][1] = 3.0;
+  A.matrix[1][2] = 2.0;
+  A.matrix[2][0] = 3.0;
+  A.matrix[2][1] = 2.0;
+  A.matrix[2][2] = 1.0;
 
   // det = 2*(3*1 - 2*2) - 1*(1*1 - 2*3) + 3*(1*2 - 3*3)
   //     = 2*(-1) - 1*(-5) + 3*(-7) = -2 + 5 - 21 = -18
@@ -56,9 +59,15 @@ START_TEST(s21_determinant_4) {
   double result = 0.0;
   s21_create_matrix(3, 3, &A);
 
-  A.matrix[0][0] = 1.0; A.matrix[0][1] = 0.0; A.matrix[0][2] = 0.0;
-  A.matrix[1][0] = 0.0; A.matrix[1][1] = 1.0; A.matrix[1][2] = 0.0;
-  A.matrix[2][0] = 0.0; A.matrix[2][1] = 0.0; A.matrix[2][2] = 1.0;
+  A.matrix[0][0] = 1.0;
+  A.matrix[0][1] = 0.0;
+  A.matrix[0][2] = 0.0;
+  A.matrix[1][0] = 0.0;
+  A.matrix[1][1] = 1.0;
+  A.matrix[1][2] = 0.0;
+  A.matrix[2][0] = 0.0;
+  A.matrix[2][1] = 0.0;
+  A.matrix[2][2] = 1.0;
 
   ck_assert_int_eq(s21_determinant(&A, &result), OK);
   ck_assert_double_eq_tol(result, 1.0, 1e-6);
@@ -72,8 +81,10 @@ START_TEST(s21_determinant_5) {
   double result = 0.0;
   s21_create_matrix(2, 2, &A);
 
-  A.matrix[0][0] = 1.0; A.matrix[0][1] = 2.0;
-  A.matrix[1][0] = 2.0; A.matrix[1][1] = 4.0;  
+  A.matrix[0][0] = 1.0;
+  A.matrix[0][1] = 2.0;
+  A.matrix[1][0] = 2.0;
+  A.matrix[1][1] = 4.0;
 
   ck_assert_int_eq(s21_determinant(&A, &result), OK);
   ck_assert_double_eq_tol(result, 0.0, 1e-6);
@@ -81,18 +92,28 @@ START_TEST(s21_determinant_5) {
   s21_remove_matrix(&A);
 }
 END_TEST
-
 
 START_TEST(s21_determinant_6) {
   matrix_t A = {0};
   double result = 0.0;
   s21_create_matrix(4, 4, &A);
 
-  A.matrix[0][0] = 1.0; A.matrix[0][1] = 0.0; A.matrix[0][2] = 0.0; A.matrix[0][3] = 1.0;
-  A.matrix[1][0] = 0.0; A.matrix[1][1] = 2.0; A.matrix[1][2] = 1.0; A.matrix[1][3] = 0.0;
-  A.matrix[2][0] = 0.0; A.matrix[2][1] = 1.0; A.matrix[2][2] = 2.0; A.matrix[2][3] = 0.0;
-  A.matrix[3][0] = 1.0; A.matrix[3][1] = 0.0; A.matrix[3][2] = 0.0; A.matrix[3][3] = 1.0;
-
+  A.matrix[0][0] = 1.0;
+  A.matrix[0][1] = 0.0;
+  A.matrix[0][2] = 0.0;
+  A.matrix[0][3] = 1.0;
+  A.matrix[1][0] = 0.0;
+  A.matrix[1][1] = 2.0;
+  A.matrix[1][2] = 1.0;
+  A.matrix[1][3] = 0.0;
+  A.matrix[2][0] = 0.0;
+  A.matrix[2][1] = 1.0;
+  A.matrix[2][2] = 2.0;
+  A.matrix[2][3] = 0.0;
+  A.matrix[3][0] = 1.0;
+  A.matrix[3][1] = 0.0;
+  A.matrix[3][2] = 0.0;
+  A.matrix[3][3] = 1.0;
 
   ck_assert_int_eq(s21_determinant(&A, &result), OK);
   ck_assert_double_eq_tol(result, 0.0, 1e-6);
@@ -101,13 +122,11 @@ START_TEST(s21_determinant_6) {
 }
 END_TEST
 
-
 START_TEST(s21_determinant_7) {
   double result = 0.0;
   ck_assert_int_eq(s21_determinant(NULL, &result), INCORRECT_MATRIX);
 }
 END_TEST
-
 
 START_TEST(s21_determinant_8) {
   matrix_t A = {0};
@@ -118,7 +137,6 @@ START_TEST(s21_determinant_8) {
   s21_remove_matrix(&A);
 }
 END_TEST
-
 
 START_TEST(s21_determinant_9) {
   matrix_t A = {0};
@@ -131,17 +149,15 @@ START_TEST(s21_determinant_9) {
 }
 END_TEST
 
-
 START_TEST(s21_determinant_10) {
-  matrix_t A = {0};  
+  matrix_t A = {0};
   double result = 0.0;
 
   ck_assert_int_eq(s21_determinant(&A, &result), INCORRECT_MATRIX);
 }
 END_TEST
 
-
-Suite *s21_determinant_suite(void){
+Suite *s21_determinant_suite(void) {
   Suite *s;
   TCase *tc_core;
 

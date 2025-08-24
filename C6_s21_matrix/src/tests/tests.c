@@ -34,10 +34,12 @@ int main(void) {
                      "s21_mult_matrix");
   s21_suit_execution(srunner_create(s21_transpose_suite()), &failed_count,
                      "s21_transpose");
-  s21_suit_execution(srunner_create(s21_calc_complements_suite()), &failed_count,
-                     "s21_calc_complements");
+  s21_suit_execution(srunner_create(s21_calc_complements_suite()),
+                     &failed_count, "s21_calc_complements");
   s21_suit_execution(srunner_create(s21_determinant_suite()), &failed_count,
                      "s21_determinant");
+  s21_suit_execution(srunner_create(s21_inverse_matrix_suite()), &failed_count,
+                     "s21_inverse_matrix");
   printf("\n\033[1;36mTotal failed: %d\033[0m\n", failed_count);
   return failed_count == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

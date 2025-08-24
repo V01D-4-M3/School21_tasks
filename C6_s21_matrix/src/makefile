@@ -24,6 +24,8 @@ build: $(TARGET)
 $(OBJS): | build build/$(SRCS_DIR)
 
 build:
+	@echo "\033[42mCreated by V01D-4-M3; Check my github:\033[0m"
+	@echo "\033[42mhttps://github.com/V01D-4-M3     ^-^  \033[0m"
 	@mkdir -p build build/$(SRCS_DIR)
 
 $(TARGET): $(OBJS)

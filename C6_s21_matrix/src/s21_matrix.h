@@ -1,3 +1,8 @@
+/*
+Created by V01D-4-M3
+Check my github: github.com/V01D-4-M3
+*/
+
 #ifndef S21_MATRIX_H
 #define S21_MATRIX_H
 
