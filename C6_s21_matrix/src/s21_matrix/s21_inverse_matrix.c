@@ -1,13 +1,14 @@
 #include "../s21_matrix.h"
 
 static int validate_inverse_input(matrix_t *A, matrix_t *result) {
-  return (A != NULL && result != NULL && A->matrix != NULL &&
-          A->rows > 0 && A->columns > 0);
+  return (A != NULL && result != NULL && A->matrix != NULL && A->rows > 0 &&
+          A->columns > 0);
 }
 
 static int calculate_determinant_safely(matrix_t *A, double *det) {
   int status = s21_determinant(A, det);
-  if (status != OK) return status;
+  if (status != OK)
+    return status;
   return (*det == 0.0) ? CALCULATION_ERROR : OK;
 }
 
@@ -44,20 +45,18 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   int status = OK;
 
   if (!validate_inverse_input(A, result)) {
-    status = INCORRECT_MATRIX;  // 1
-  }
-  else if (A->rows != A->columns) {
-    status = CALCULATION_ERROR;  // 2
-  }
-  else {
+    status = INCORRECT_MATRIX; // 1
+  } else if (A->rows != A->columns) {
+    status = CALCULATION_ERROR; // 2
+  } else {
     double det = 0.0;
     int det_status = calculate_determinant_safely(A, &det);
     if (det_status != OK) {
-      status = det_status; 
+      status = det_status;
     } else {
       matrix_t cofactors = {0};
       if (compute_cofactors_safely(A, &cofactors) != OK) {
-        status = CALCULATION_ERROR;  
+        status = CALCULATION_ERROR;
       } else {
         matrix_t adjugate = {0};
         status = compute_adjugate_safely(&cofactors, &adjugate);

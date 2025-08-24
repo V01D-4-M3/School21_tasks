@@ -10,10 +10,8 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
 
   if (validate_input(result) != OK) {
     error = INCORRECT_MATRIX;
-  }
-  else if ((error = validate_dimensions(rows, columns)) != OK) {
-  }
-  else {
+  } else if ((error = validate_dimensions(rows, columns)) != OK) {
+  } else {
     error = allocate_matrix_data(result, rows, columns);
   }
 

@@ -1,7 +1,7 @@
 #include "../s21_matrix.h"
 
 static int validate_transpose_input(const matrix_t *A, const matrix_t *result) {
-  if (A == NULL || result == NULL)  {
+  if (A == NULL || result == NULL) {
     return 0;
   }
   return (A->matrix != NULL);
