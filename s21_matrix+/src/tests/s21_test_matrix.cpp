@@ -11,7 +11,7 @@ TEST(MatrixTest, CreateMatrixWithSize) {
   S21Matrix matrix(3, 4);
   EXPECT_EQ(matrix.getRows(), 3);
   EXPECT_EQ(matrix.getCols(), 4);
-  
+
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 4; j++) {
       EXPECT_DOUBLE_EQ(matrix(i, j), 0.0);
@@ -31,7 +31,7 @@ TEST(MatrixTest, CreateMatrixCopy) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(matrix1);
   EXPECT_EQ(matrix2.getRows(), 2);
   EXPECT_EQ(matrix2.getCols(), 2);
@@ -45,7 +45,7 @@ TEST(MatrixTest, CreateMatrixMove) {
   S21Matrix matrix1(2, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
-  
+
   S21Matrix matrix2(std::move(matrix1));
   EXPECT_EQ(matrix2.getRows(), 2);
   EXPECT_EQ(matrix2.getCols(), 2);
@@ -61,7 +61,7 @@ TEST(MatrixTest, SetRowsIncrease) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   matrix.setRows(3);
   EXPECT_EQ(matrix.getRows(), 3);
   EXPECT_EQ(matrix.getCols(), 2);
@@ -81,7 +81,7 @@ TEST(MatrixTest, SetRowsDecrease) {
   matrix(1, 1) = 4.0;
   matrix(2, 0) = 5.0;
   matrix(2, 1) = 6.0;
-  
+
   matrix.setRows(2);
   EXPECT_EQ(matrix.getRows(), 2);
   EXPECT_EQ(matrix.getCols(), 2);
@@ -103,7 +103,7 @@ TEST(MatrixTest, SetColsIncrease) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   matrix.setCols(3);
   EXPECT_EQ(matrix.getRows(), 2);
   EXPECT_EQ(matrix.getCols(), 3);
@@ -123,7 +123,7 @@ TEST(MatrixTest, SetColsDecrease) {
   matrix(1, 0) = 4.0;
   matrix(1, 1) = 5.0;
   matrix(1, 2) = 6.0;
-  
+
   matrix.setCols(2);
   EXPECT_EQ(matrix.getRows(), 2);
   EXPECT_EQ(matrix.getCols(), 2);
@@ -145,13 +145,13 @@ TEST(MatrixTest, EqMatrixTrue) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 4.0;
-  
+
   EXPECT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
@@ -161,20 +161,20 @@ TEST(MatrixTest, EqMatrixFalse) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 5.0;
-  
+
   EXPECT_FALSE(matrix1.EqMatrix(matrix2));
 }
 
 TEST(MatrixTest, EqMatrixDifferentSizes) {
   S21Matrix matrix1(2, 2);
   S21Matrix matrix2(2, 3);
-  
+
   EXPECT_FALSE(matrix1.EqMatrix(matrix2));
 }
 
@@ -184,15 +184,15 @@ TEST(MatrixTest, SumMatrixValid) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 5.0;
   matrix2(0, 1) = 6.0;
   matrix2(1, 0) = 7.0;
   matrix2(1, 1) = 8.0;
-  
+
   matrix1.SumMatrix(matrix2);
-  
+
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 6.0);
   EXPECT_DOUBLE_EQ(matrix1(0, 1), 8.0);
   EXPECT_DOUBLE_EQ(matrix1(1, 0), 10.0);
@@ -202,7 +202,7 @@ TEST(MatrixTest, SumMatrixValid) {
 TEST(MatrixTest, SumMatrixInvalid) {
   S21Matrix matrix1(2, 2);
   S21Matrix matrix2(2, 3);
-  
+
   EXPECT_THROW(matrix1.SumMatrix(matrix2), std::logic_error);
 }
 
@@ -212,15 +212,15 @@ TEST(MatrixTest, SubMatrixValid) {
   matrix1(0, 1) = 6.0;
   matrix1(1, 0) = 7.0;
   matrix1(1, 1) = 8.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 4.0;
-  
+
   matrix1.SubMatrix(matrix2);
-  
+
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 4.0);
   EXPECT_DOUBLE_EQ(matrix1(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(matrix1(1, 0), 4.0);
@@ -230,7 +230,7 @@ TEST(MatrixTest, SubMatrixValid) {
 TEST(MatrixTest, SubMatrixInvalid) {
   S21Matrix matrix1(2, 2);
   S21Matrix matrix2(2, 3);
-  
+
   EXPECT_THROW(matrix1.SubMatrix(matrix2), std::logic_error);
 }
 
@@ -240,9 +240,9 @@ TEST(MatrixTest, MulNumberValid) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   matrix.MulNumber(2.0);
-  
+
   EXPECT_DOUBLE_EQ(matrix(0, 0), 2.0);
   EXPECT_DOUBLE_EQ(matrix(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(matrix(1, 0), 6.0);
@@ -257,7 +257,7 @@ TEST(MatrixTest, MulMatrixValid) {
   matrix1(1, 0) = 4.0;
   matrix1(1, 1) = 5.0;
   matrix1(1, 2) = 6.0;
-  
+
   S21Matrix matrix2(3, 2);
   matrix2(0, 0) = 7.0;
   matrix2(0, 1) = 8.0;
@@ -265,9 +265,9 @@ TEST(MatrixTest, MulMatrixValid) {
   matrix2(1, 1) = 10.0;
   matrix2(2, 0) = 11.0;
   matrix2(2, 1) = 12.0;
-  
+
   matrix1.MulMatrix(matrix2);
-  
+
   EXPECT_EQ(matrix1.getRows(), 2);
   EXPECT_EQ(matrix1.getCols(), 2);
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 58.0);
@@ -279,7 +279,7 @@ TEST(MatrixTest, MulMatrixValid) {
 TEST(MatrixTest, MulMatrixInvalid) {
   S21Matrix matrix1(2, 2);
   S21Matrix matrix2(3, 3);
-  
+
   EXPECT_THROW(matrix1.MulMatrix(matrix2), std::logic_error);
 }
 
@@ -291,9 +291,9 @@ TEST(MatrixTest, TransposeValid) {
   matrix(1, 0) = 4.0;
   matrix(1, 1) = 5.0;
   matrix(1, 2) = 6.0;
-  
+
   S21Matrix result = matrix.Transpose();
-  
+
   EXPECT_EQ(result.getRows(), 3);
   EXPECT_EQ(result.getCols(), 2);
   EXPECT_DOUBLE_EQ(result(0, 0), 1.0);
@@ -307,7 +307,7 @@ TEST(MatrixTest, TransposeValid) {
 TEST(MatrixTest, Determinant1x1) {
   S21Matrix matrix(1, 1);
   matrix(0, 0) = 5.0;
-  
+
   EXPECT_DOUBLE_EQ(matrix.Determinant(), 5.0);
 }
 
@@ -317,7 +317,7 @@ TEST(MatrixTest, Determinant2x2) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   EXPECT_DOUBLE_EQ(matrix.Determinant(), -2.0);
 }
 
@@ -332,13 +332,13 @@ TEST(MatrixTest, Determinant3x3) {
   matrix(2, 0) = 7.0;
   matrix(2, 1) = 8.0;
   matrix(2, 2) = 9.0;
-  
+
   EXPECT_DOUBLE_EQ(matrix.Determinant(), 0.0);
 }
 
 TEST(MatrixTest, DeterminantInvalid) {
   S21Matrix matrix(2, 3);
-  
+
   EXPECT_THROW(matrix.Determinant(), std::logic_error);
 }
 
@@ -348,9 +348,9 @@ TEST(MatrixTest, CalcComplements2x2) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   S21Matrix result = matrix.CalcComplements();
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 4.0);
   EXPECT_DOUBLE_EQ(result(0, 1), -3.0);
   EXPECT_DOUBLE_EQ(result(1, 0), -2.0);
@@ -368,9 +368,9 @@ TEST(MatrixTest, CalcComplements3x3) {
   matrix(2, 0) = 5.0;
   matrix(2, 1) = 2.0;
   matrix(2, 2) = 1.0;
-  
+
   S21Matrix result = matrix.CalcComplements();
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 0.0);
   EXPECT_DOUBLE_EQ(result(0, 1), 10.0);
   EXPECT_DOUBLE_EQ(result(0, 2), -20.0);
@@ -384,7 +384,7 @@ TEST(MatrixTest, CalcComplements3x3) {
 
 TEST(MatrixTest, CalcComplementsInvalid) {
   S21Matrix matrix(2, 3);
-  
+
   EXPECT_THROW(matrix.CalcComplements(), std::logic_error);
 }
 
@@ -394,9 +394,9 @@ TEST(MatrixTest, InverseMatrix2x2) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   S21Matrix result = matrix.InverseMatrix();
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), -2.0);
   EXPECT_DOUBLE_EQ(result(0, 1), 1.0);
   EXPECT_DOUBLE_EQ(result(1, 0), 1.5);
@@ -414,9 +414,9 @@ TEST(MatrixTest, InverseMatrix3x3) {
   matrix(2, 0) = 5.0;
   matrix(2, 1) = -2.0;
   matrix(2, 2) = -3.0;
-  
+
   S21Matrix result = matrix.InverseMatrix();
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 1.0);
   EXPECT_DOUBLE_EQ(result(0, 1), -1.0);
   EXPECT_DOUBLE_EQ(result(0, 2), 1.0);
@@ -431,13 +431,13 @@ TEST(MatrixTest, InverseMatrix3x3) {
 TEST(MatrixTest, InverseMatrixInvalid) {
   S21Matrix matrix1(2, 3);
   EXPECT_THROW(matrix1.InverseMatrix(), std::logic_error);
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 2.0;
   matrix2(1, 1) = 4.0;
-  
+
   EXPECT_THROW(matrix2.InverseMatrix(), std::logic_error);
 }
 
@@ -447,15 +447,15 @@ TEST(MatrixTest, OperatorPlus) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 5.0;
   matrix2(0, 1) = 6.0;
   matrix2(1, 0) = 7.0;
   matrix2(1, 1) = 8.0;
-  
+
   S21Matrix result = matrix1 + matrix2;
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 6.0);
   EXPECT_DOUBLE_EQ(result(0, 1), 8.0);
   EXPECT_DOUBLE_EQ(result(1, 0), 10.0);
@@ -468,15 +468,15 @@ TEST(MatrixTest, OperatorMinus) {
   matrix1(0, 1) = 6.0;
   matrix1(1, 0) = 7.0;
   matrix1(1, 1) = 8.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 4.0;
-  
+
   S21Matrix result = matrix1 - matrix2;
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 4.0);
   EXPECT_DOUBLE_EQ(result(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(result(1, 0), 4.0);
@@ -489,9 +489,9 @@ TEST(MatrixTest, OperatorMultiplyNumber) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   S21Matrix result = matrix * 2.0;
-  
+
   EXPECT_DOUBLE_EQ(result(0, 0), 2.0);
   EXPECT_DOUBLE_EQ(result(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(result(1, 0), 6.0);
@@ -506,7 +506,7 @@ TEST(MatrixTest, OperatorMultiplyMatrix) {
   matrix1(1, 0) = 4.0;
   matrix1(1, 1) = 5.0;
   matrix1(1, 2) = 6.0;
-  
+
   S21Matrix matrix2(3, 2);
   matrix2(0, 0) = 7.0;
   matrix2(0, 1) = 8.0;
@@ -514,9 +514,9 @@ TEST(MatrixTest, OperatorMultiplyMatrix) {
   matrix2(1, 1) = 10.0;
   matrix2(2, 0) = 11.0;
   matrix2(2, 1) = 12.0;
-  
+
   S21Matrix result = matrix1 * matrix2;
-  
+
   EXPECT_EQ(result.getRows(), 2);
   EXPECT_EQ(result.getCols(), 2);
   EXPECT_DOUBLE_EQ(result(0, 0), 58.0);
@@ -531,13 +531,13 @@ TEST(MatrixTest, OperatorEqual) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 4.0;
-  
+
   EXPECT_TRUE(matrix1 == matrix2);
 }
 
@@ -547,9 +547,9 @@ TEST(MatrixTest, OperatorAssignment) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2 = matrix1;
-  
+
   EXPECT_EQ(matrix2.getRows(), 2);
   EXPECT_EQ(matrix2.getCols(), 2);
   EXPECT_DOUBLE_EQ(matrix2(0, 0), 1.0);
@@ -564,15 +564,15 @@ TEST(MatrixTest, OperatorPlusAssignment) {
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 4.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 5.0;
   matrix2(0, 1) = 6.0;
   matrix2(1, 0) = 7.0;
   matrix2(1, 1) = 8.0;
-  
+
   matrix1 += matrix2;
-  
+
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 6.0);
   EXPECT_DOUBLE_EQ(matrix1(0, 1), 8.0);
   EXPECT_DOUBLE_EQ(matrix1(1, 0), 10.0);
@@ -585,15 +585,15 @@ TEST(MatrixTest, OperatorMinusAssignment) {
   matrix1(0, 1) = 6.0;
   matrix1(1, 0) = 7.0;
   matrix1(1, 1) = 8.0;
-  
+
   S21Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
   matrix2(1, 1) = 4.0;
-  
+
   matrix1 -= matrix2;
-  
+
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 4.0);
   EXPECT_DOUBLE_EQ(matrix1(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(matrix1(1, 0), 4.0);
@@ -606,9 +606,9 @@ TEST(MatrixTest, OperatorMultiplyNumberAssignment) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   matrix *= 2.0;
-  
+
   EXPECT_DOUBLE_EQ(matrix(0, 0), 2.0);
   EXPECT_DOUBLE_EQ(matrix(0, 1), 4.0);
   EXPECT_DOUBLE_EQ(matrix(1, 0), 6.0);
@@ -623,7 +623,7 @@ TEST(MatrixTest, OperatorMultiplyMatrixAssignment) {
   matrix1(1, 0) = 4.0;
   matrix1(1, 1) = 5.0;
   matrix1(1, 2) = 6.0;
-  
+
   S21Matrix matrix2(3, 2);
   matrix2(0, 0) = 7.0;
   matrix2(0, 1) = 8.0;
@@ -631,9 +631,9 @@ TEST(MatrixTest, OperatorMultiplyMatrixAssignment) {
   matrix2(1, 1) = 10.0;
   matrix2(2, 0) = 11.0;
   matrix2(2, 1) = 12.0;
-  
+
   matrix1 *= matrix2;
-  
+
   EXPECT_EQ(matrix1.getRows(), 2);
   EXPECT_EQ(matrix1.getCols(), 2);
   EXPECT_DOUBLE_EQ(matrix1(0, 0), 58.0);
@@ -648,7 +648,7 @@ TEST(MatrixTest, OperatorParentheses) {
   matrix(0, 1) = 2.0;
   matrix(1, 0) = 3.0;
   matrix(1, 1) = 4.0;
-  
+
   EXPECT_DOUBLE_EQ(matrix(0, 0), 1.0);
   EXPECT_DOUBLE_EQ(matrix(0, 1), 2.0);
   EXPECT_DOUBLE_EQ(matrix(1, 0), 3.0);
@@ -657,7 +657,7 @@ TEST(MatrixTest, OperatorParentheses) {
 
 TEST(MatrixTest, OperatorParenthesesConst) {
   const S21Matrix matrix(2, 2);
-  
+
   EXPECT_DOUBLE_EQ(matrix(0, 0), 0.0);
   EXPECT_DOUBLE_EQ(matrix(0, 1), 0.0);
   EXPECT_DOUBLE_EQ(matrix(1, 0), 0.0);
@@ -666,7 +666,7 @@ TEST(MatrixTest, OperatorParenthesesConst) {
 
 TEST(MatrixTest, OperatorParenthesesInvalid) {
   S21Matrix matrix(2, 2);
-  
+
   EXPECT_THROW(matrix(2, 0), std::out_of_range);
   EXPECT_THROW(matrix(0, 2), std::out_of_range);
   EXPECT_THROW(matrix(-1, 0), std::out_of_range);
