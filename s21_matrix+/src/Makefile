@@ -23,8 +23,8 @@ $(TARGET): $(OBJS)
 	@mkdir -p $(BUILD_DIR)
 	@ar rcs $(TARGET) $(OBJS)
 	@echo "\033[32mStatic library created: $(TARGET)\033[0m"
-	@echo "\033[42mCreated by V01D-4-M3; Check my github:\033[0m"
-	@echo "\033[42mhttps://github.com/V01D-4-M3           ^-^  \033[0m"
+	@echo "\033[107mCreated by V01D-4-M3; Check my github:\033[0m"
+	@echo "\033[106mhttps://github.com/V01D-4-M3     ^-^  \033[0m"
 
 $(OBJECTS_DIR)/s21_matrix.o: $(SRCS_DIR)/s21_matrix.cpp
 	@mkdir -p $(OBJECTS_DIR)
