@@ -1,4 +1,4 @@
-#include "s21_matrix.h"
+#include "s21_matrix_oop.h"
 
 #include <cmath>
 #include <iostream>
@@ -20,7 +20,9 @@ S21Matrix::S21Matrix(int rows, int cols) : rows_(rows), cols_(cols) {
 
 S21Matrix::S21Matrix(const S21Matrix &other) { copyFrom(other); }
 
-S21Matrix::S21Matrix(S21Matrix &&other) { moveFrom(std::move(other)); }
+S21Matrix::S21Matrix(S21Matrix &&other) : rows_(0), cols_(0), matrix_(nullptr) {
+  moveFrom(std::move(other));
+}
 
 S21Matrix::~S21Matrix() { cleanUp(); }
 
@@ -90,7 +92,7 @@ void S21Matrix::setRows(int new_rows) {
 
   S21Matrix tmp(new_rows, cols_);
   copyDataTo(tmp, std::min(rows_, new_rows), cols_);
-  moveFrom(std::move(tmp));
+  *this = std::move(tmp);
 }
 
 void S21Matrix::setCols(int new_cols) {
@@ -100,7 +102,7 @@ void S21Matrix::setCols(int new_cols) {
 
   S21Matrix tmp(rows_, new_cols);
   copyDataTo(tmp, rows_, std::min(cols_, new_cols));
-  moveFrom(std::move(tmp));
+  *this = std::move(tmp);
 }
 
 void S21Matrix::copyDataTo(S21Matrix &target, int rows, int cols) const {
@@ -125,16 +127,14 @@ void S21Matrix::validateMatrixForOperations(const S21Matrix &other) const {
 }
 
 bool S21Matrix::EqMatrix(const S21Matrix &other) const {
-  validateMatrixForOperations(other);
+  if (!isValid() || !other.isValid()) {
+    return false;
+  }
 
   if (rows_ != other.rows_ || cols_ != other.cols_) {
     return false;
   }
 
-  return compareMatrixElements(other);
-}
-
-bool S21Matrix::compareMatrixElements(const S21Matrix &other) const {
   for (int i = 0; i < rows_; i++) {
     for (int j = 0; j < cols_; j++) {
       if (std::fabs(matrix_[i][j] - other.matrix_[i][j]) > EPS) {
@@ -190,7 +190,7 @@ void S21Matrix::MulMatrix(const S21Matrix &other) {
 
   S21Matrix result(rows_, other.cols_);
   calculateMatrixMultiplication(other, result);
-  moveFrom(std::move(result));
+  *this = std::move(result);
 }
 
 void S21Matrix::calculateMatrixMultiplication(const S21Matrix &other,
@@ -366,8 +366,9 @@ S21Matrix S21Matrix::operator*(double number) const {
 }
 
 S21Matrix S21Matrix::operator*(const S21Matrix &other) const {
-  S21Matrix result(*this);
-  result.MulMatrix(other);
+  validateMatrixForMultiplication(other);
+  S21Matrix result(rows_, other.cols_);
+  calculateMatrixMultiplication(other, result);
   return result;
 }
 

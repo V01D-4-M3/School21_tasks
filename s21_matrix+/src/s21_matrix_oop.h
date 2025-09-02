@@ -78,4 +78,4 @@ private:
 
 S21Matrix operator*(double number, const S21Matrix &matrix);
 
-#endif // S21_MATRIX_OOP_H_
+#endif

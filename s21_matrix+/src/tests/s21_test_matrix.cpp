@@ -1,4 +1,4 @@
-#include "../s21_matrix.h"
+#include "../s21_matrix_oop.h"
 #include <gtest/gtest.h>
 
 TEST(MatrixTest, CreateMatrixDefault) {

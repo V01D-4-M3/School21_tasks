@@ -4,18 +4,18 @@ GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 LIBS = -lgtest -lgtest_main -pthread
 
 SRCS_DIR = .
-TESTS_DIR = tests
+TESTS_DIR = ./tests
 BUILD_DIR = build
 OBJECTS_DIR = $(BUILD_DIR)/objects
 COVERAGE_DIR = $(BUILD_DIR)/coverage
 
-TARGET = $(BUILD_DIR)/libs21_matrix.a
+TARGET = $(BUILD_DIR)/s21_matrix_oop.a
 TEST_TARGET = $(BUILD_DIR)/s21_test
 GCOV_TARGET = $(BUILD_DIR)/s21_test_gcov
 
-SRCS = $(wildcard $(SRCS_DIR)/*.cpp)
-OBJS = $(patsubst $(SRCS_DIR)/%.cpp,$(OBJECTS_DIR)/%.o,$(SRCS))
-TEST_SRC = $(wildcard $(TESTS_DIR)/*.cpp)
+SRCS = $(SRCS_DIR)/s21_matrix.cpp
+OBJS = $(OBJECTS_DIR)/s21_matrix.o
+TEST_SRC = $(TESTS_DIR)/s21_test_matrix.cpp
 
 all: $(TARGET)
 
@@ -24,11 +24,11 @@ $(TARGET): $(OBJS)
 	@ar rcs $(TARGET) $(OBJS)
 	@echo "\033[32mStatic library created: $(TARGET)\033[0m"
 	@echo "\033[42mCreated by V01D-4-M3; Check my github:\033[0m"
-	@echo "\033[42mhttps://github.com/V01D-4-M3       ^-^  \033[0m"
+	@echo "\033[42mhttps://github.com/V01D-4-M3           ^-^  \033[0m"
 
-$(OBJECTS_DIR)/%.o: $(SRCS_DIR)/%.cpp
+$(OBJECTS_DIR)/s21_matrix.o: $(SRCS_DIR)/s21_matrix.cpp
 	@mkdir -p $(OBJECTS_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@ -I$(SRCS_DIR)
 
 test: $(TARGET)
 	@echo "\033[34mBuilding test executable...\033[0m"
@@ -40,19 +40,23 @@ test: $(TARGET)
 	@echo "\033[32mAll tests passed!\033[0m"
 
 gcov: CFLAGS += $(GCOV_FLAGS)
-gcov: $(TARGET)
+gcov: $(OBJS)
 	@echo "\033[34mBuilding test executable with coverage...\033[0m"
-	@$(CC) $(CFLAGS) $(TEST_SRC) -I$(SRCS_DIR) -o $(GCOV_TARGET) $(TARGET) $(LIBS)
+	@mkdir -p $(BUILD_DIR)
+	@$(CC) $(CFLAGS) $(TEST_SRC) -I$(SRCS_DIR) -o $(GCOV_TARGET) $(OBJS) $(LIBS)
 	@echo "\033[32mRunning tests with coverage...\033[0m"
 	@echo "----------------------------------------------------"
 	@./$(GCOV_TARGET)
 	@echo "----------------------------------------------------"
 	@echo "\033[34mGenerating coverage data...\033[0m"
-	@gcov -a -b -o $(OBJECTS_DIR) $(SRCS_DIR)/*.cpp
-	@mkdir -p $(COVERAGE_DIR)/html
+	@mkdir -p $(COVERAGE_DIR)
 	@lcov --capture --directory $(OBJECTS_DIR) --output-file $(COVERAGE_DIR)/coverage.info
-	@genhtml $(COVERAGE_DIR)/coverage.info --output-directory $(COVERAGE_DIR)/html
+	@echo "\033[34mFiltering out system headers...\033[0m"
+	@lcov --remove $(COVERAGE_DIR)/coverage.info '/usr/*' --output-file $(COVERAGE_DIR)/coverage_filtered.info
+	@genhtml $(COVERAGE_DIR)/coverage_filtered.info --output-directory $(COVERAGE_DIR)/html
 	@echo "\033[32mCoverage report generated at $(COVERAGE_DIR)/html/index.html\033[0m"
+	@echo "\033[33mOpening coverage report in browser...\033[0m"
+	@xdg-open $(COVERAGE_DIR)/html/index.html 2>/dev/null || open $(COVERAGE_DIR)/html/index.html 2>/dev/null || echo "\033[31mCould not open browser automatically\033[0m"
 
 valgrind_check: $(TARGET)
 	@echo "\033[34mBuilding test executable for valgrind...\033[0m"
@@ -66,14 +70,14 @@ valgrind_check: $(TARGET)
 format_style:
 	@echo "\033[34mFormatting code style...\033[0m"
 	@cp ../materials/linters/.clang-format .
-	@clang-format -i *.cpp *.h **/*.cpp
+	@clang-format -i *.cpp *.h tests/*.cpp
 	@rm ./.clang-format
 	@echo "\033[32mCode formatting completed!\033[0m"
 
 style_check:
 	@echo "\033[34mChecking code style...\033[0m"
 	@cp ../materials/linters/.clang-format .
-	@clang-format -n *.cpp *.h **/*.cpp|| (echo "\033[31mStyle check failed!\033[0m" && rm ./.clang-format && exit 1)
+	@clang-format -n *.cpp *.h tests/*.cpp || (echo "\033[31mStyle check failed!\033[0m" && rm ./.clang-format && exit 1)
 	@rm ./.clang-format
 	@echo "\033[32mStyle check passed!\033[0m"
 
