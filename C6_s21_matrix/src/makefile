@@ -72,14 +72,14 @@ valgrind_check: clean $(OBJS)
 	@echo "\033[32mValgrind log saved to build/valgrind.log\033[0m"
 
 format_style:
-	@cp ../materials/linters/.clang-format . 2>/dev/null || true
-	@clang-format -i $(SRCS_DIR)/*.c $(SRCS_DIR)/*.h tests/*.c tests/*.h *.h
-	@rm -f ./.clang-format
+	@cp ../materials/linters/.clang-format .
+	@clang-format -i *.h **/*.c
+	@rm ./.clang-format
 
 style_check:
-	@cp ../materials/linters/.clang-format . 2>/dev/null || true
-	@clang-format -n $(SRCS_DIR)/*.c $(SRCS_DIR)/*.h tests/*.c tests/*.h *.h || exit 1
-	@rm -f ./.clang-format
+	@cp ../materials/linters/.clang-format .
+	@clang-format -n *.h **/*.c
+	@rm ./.clang-format
 	@echo "\033[32mStyle check passed.\033[0m"
 
 clean:
