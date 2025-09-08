@@ -2,8 +2,10 @@
 
 #define GAME_TITLE_Y 4
 #define GAME_TITLE_X 7
-#define START_OPTION_Y 6
-#define START_OPTION_X 4
+#define START_PROMPT_Y 10
+#define START_PROMPT_X 1
+#define AUTHOR_INFO_Y 21
+#define AUTHOR_INFO_X 2
 
 UserAction_t get_signal(int user_input) {
   UserAction_t action = -1;
@@ -42,12 +44,29 @@ void print_overlay(void) {
   mvprintw(19, 24, "arrows - move");
   mvprintw(20, 24, "ENTER - rotate");
 
-  mvprintw(10, 1, "Press ENTER to START");
+  print_author_info();
+}
+
+void print_start_screen(void) {
+  print_rectangle(TOP_Y, BOT_Y, LEFT_X, RIGHT_X);
+  print_rectangle(NEXT_TOP_Y, NEXT_BOT_Y, NEXT_LEFT_X, NEXT_RIGHT_X);
+
+  mvprintw(GAME_TITLE_Y, GAME_TITLE_X, "TETRIS GAME");
+  mvprintw(START_PROMPT_Y, START_PROMPT_X, "Press ENTER to START");
+  mvprintw(17, 24, "ESC - exit");
+  mvprintw(18, 24, "BACKSPACE - pause");
+  mvprintw(19, 24, "arrows - move");
+  mvprintw(20, 24, "ENTER - rotate");
+
+  print_author_info();
+}
+
+void print_author_info(void) {
+  mvprintw(AUTHOR_INFO_Y, AUTHOR_INFO_X, "Created by V01D-4-M3");
 }
 
 void print_rectangle(int top_y, int bottom_y, int left_x, int right_x) {
   print_vertical_borders(top_y, bottom_y, left_x, right_x);
-  print_horizontal_dots(top_y, bottom_y, left_x, right_x);
   print_bottom_border(bottom_y, left_x, right_x);
 }
 
@@ -55,16 +74,6 @@ void print_vertical_borders(int top_y, int bottom_y, int left_x, int right_x) {
   for (int y = top_y; y < bottom_y + 1; y++) {
     mvprintw(y, left_x, "|");
     mvprintw(y, right_x, "|");
-  }
-}
-
-void print_horizontal_dots(int top_y, int bottom_y, int left_x, int right_x) {
-  for (int y = top_y; y < bottom_y + 1; y++) {
-    for (int x = left_x; x < right_x; x++) {
-      if (x % 2 == 1) {
-        mvaddch(y, x + 1, '.');
-      }
-    }
   }
 }
 
@@ -95,7 +104,7 @@ void print_board_cell(int x, int y, int cell_value) {
     mvaddch(y + TOP_Y, x * 2 + 1 + (LEFT_X + 1), ']');
   } else {
     mvaddch(y + TOP_Y, x * 2 + (LEFT_X + 1), ' ');
-    mvaddch(y + TOP_Y, x * 2 + 1 + (LEFT_X + 1), '.');
+    mvaddch(y + TOP_Y, x * 2 + 1 + (LEFT_X + 1), ' ');
   }
 }
 
@@ -125,13 +134,13 @@ void print_next_cell(int i, int j, int cell_value) {
   if (cell_value == 1) {
     mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 1 + i * 2, "[]");
   } else {
-    mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 1 + i * 2, " .");
+    mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 1 + i * 2, "  ");
   }
 }
 
 void print_pause(void) { mvprintw(10, 4, " GAME PAUSED "); }
 
-void updateCurrentState(GameInfo_t *gameInfo) { // Принимаем параметр
+void updateCurrentState(GameInfo_t *gameInfo) {
   if (gameInfo == NULL)
     return;
 
@@ -155,27 +164,7 @@ GameInfo_t *change_GameInfo_t(GameInfo_t *gameInfo) {
   return stored_info;
 }
 
-void select_game(int selectedGame) {
-  print_game_selection_title();
-  print_start_option();
-  highlight_start_option(selectedGame);
-}
-
-void print_game_selection_title() {
-  mvprintw(GAME_TITLE_Y, GAME_TITLE_X, "TETRIS GAME");
-}
-
-void print_start_option() {
-  mvprintw(START_OPTION_Y, START_OPTION_X, "   START GAME");
-}
-
-void highlight_start_option(int selectedGame) {
-  if (selectedGame == 0) {
-    mvprintw(START_OPTION_Y, START_OPTION_X, "[] START GAME");
-  }
-}
-
-void clear_select_game_screen() {
+void clear_start_screen() {
   mvprintw(GAME_TITLE_Y, GAME_TITLE_X, "            ");
-  mvprintw(START_OPTION_Y, START_OPTION_X, "             ");
+  mvprintw(START_PROMPT_Y, START_PROMPT_X, "                   ");
 }

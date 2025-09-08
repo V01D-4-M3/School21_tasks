@@ -1,6 +1,5 @@
 #include "tetris.h"
 
-
 static GameInfo_t *stored_game_info = NULL;
 static tetris_state *stored_state = NULL;
 static Tetramino *stored_current = NULL;

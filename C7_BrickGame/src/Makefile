@@ -71,8 +71,7 @@ create_static_library: $(FSM_OBJECTS)
 	ar rc tetris.a $(FSM_OBJECTS)
 	ranlib tetris.a
 	@echo -e "$(GREEN)Static library created!$(NC)"
-
-# Updated patterns to match the actual directory structure
+	
 %.o: brick_game/tetris/%.c
 	@echo -e "$(GREEN)Compiling $<...$(NC)"
 	$(CC) $(CFLAGS) $(POSIX) -c $< -o $@
